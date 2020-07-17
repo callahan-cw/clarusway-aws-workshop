@@ -17,10 +17,6 @@ Resources:
                   FromPort: 80
                   ToPort: 80
                   CidrIp: 0.0.0.0/0
-                - IpProtocol: tcp
-                  FromPort: 22
-                  ToPort: 22
-                  CidrIp: 0.0.0.0/0
 
     MyWebServer:
         Type: AWS::EC2::Instance
@@ -33,7 +29,7 @@ Resources:
                 - Key: Name
                   Value: !Sub Web Server of ${AWS::StackName} Stack
             UserData:
-                Fn::Base64: !Sub |
+                Fn::Base64: |
                     #! /bin/bash
                     yum update -y
                     yum install python3 -y
