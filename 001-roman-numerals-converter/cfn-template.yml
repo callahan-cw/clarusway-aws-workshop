@@ -12,15 +12,15 @@ Resources:
         Properties:
             GroupDescription: Enables HTTP for Flask Web Server
             GroupName: Flask-WS-SG
-            SecurityGroupIngress: 
-                -   IpProtocol: tcp
-                    FromPort: 80
-                    ToPort: 80
-                    CidrIp: 0.0.0.0/0
-                -   IpProtocol: tcp
-                    FromPort: 22
-                    ToPort: 22
-                    CidrIp: 0.0.0.0/0 
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  FromPort: 80
+                  ToPort: 80
+                  CidrIp: 0.0.0.0/0
+                - IpProtocol: tcp
+                  FromPort: 22
+                  ToPort: 22
+                  CidrIp: 0.0.0.0/0
 
     MyWebServer:
         Type: AWS::EC2::Instance
@@ -30,12 +30,10 @@ Resources:
             SecurityGroupIds:
                 - !Ref MySecurityGroup
             Tags:
-                - 
-                    Key: Name
-                    Value: !Sub Web Server of ${AWS::StackName} Stack
+                - Key: Name
+                  Value: !Sub Web Server of ${AWS::StackName} Stack
             UserData:
-                Fn::Base64:
-                   !Sub |
+                Fn::Base64: !Sub |
                     #! /bin/bash
                     yum update -y
                     yum install python3 -y
@@ -44,11 +42,10 @@ Resources:
                     wget -P templates https://raw.githubusercontent.com/callahan-cw/clarusway-aws-workshop/master/001-roman-numerals-converter/templates/result.html
                     wget https://raw.githubusercontent.com/callahan-cw/clarusway-aws-workshop/master/001-roman-numerals-converter/app.py
                     python3 app.py
-                    
+
 Outputs:
     WebsiteURL:
         Description: Roman Numerals Converter Application Website URL
         Value: !Sub
             - http://${PublicAddress}
             - PublicAddress: !GetAtt MyWebServer.PublicDnsName
-    
